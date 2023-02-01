@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+    flyway:
+        image: flyway/flyway:9-alpine
+        environment:
+        - FLYWAY_EDITION=community
+        command: -url=jdbc:postgresql://${DATABASE_HOST}:5432/${DATABASE_NAME} -schemas=flyway -user=${DATABASE_USER} -password=${DATABASE_PASSWORD} -connectRetries=10 migrate
+        volumes:
+        - ./db/migrations:/flyway/sql
+
+networks:
+  default:
+    external: true
+    name: backend
